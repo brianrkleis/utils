@@ -32,7 +32,7 @@ function dockerInstall() {
 
 function dockerComposeInstall() {
 	
-	if ! command -v docker &> /dev/null
+	if ! command -v docker-compose &> /dev/null
 	then
 
         	curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose

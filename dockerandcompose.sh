@@ -34,6 +34,7 @@ function dockerComposeInstall() {
 	
 	if ! command -v docker-compose &> /dev/null
 	then
+
         	curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         	chmod +x /usr/local/bin/docker-compose
         	ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
@@ -46,32 +47,6 @@ function dockerComposeInstall() {
 
 }
 
-if ! command -v lsb_release $> /dev/null
-then
-	DISTRO=`lsb_release -i | cut -f 2-`
-	if [[ $DISTRO == Kali ]];then
-		echo "Kali Linux intallation"
-		printf '%s\n' "deb https://download.docker.com/linux/debian bullseye stable"
-		tee /etc/apt/sources.list.d/docker-ce.list
-		curlTry
-		curl -fsSL https://download.docker.com/linux/debian/gpg
-		gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-ce-archive-keyring.gpg
-		apt update 
-		apt install -y docker docker-ce docker-ce-cli containerd.io docker-compose 
-
-	if [[ $DISTRO == Debian]] || [[$DISTRO = Ubuntu]] || [[$DISTRO = Red Hat ]] || [[$DISTRO = CentOS ]];then
-		echo "Debian Linux installation"
-		curlTry
-		dockerInstall
-		dockerComposeInstall
-		
-	fi
-
-	if [[ $DISTRO == OracleServer ]];then
-		echo "not enable to insall docker yet"
-
-else
-	echo "command lsb_release not found... please install..."
-	exit 1
-fi
-
+curlTry
+dockerInstall
+dockerComposeInstall
